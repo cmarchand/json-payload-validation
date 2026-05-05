@@ -16,7 +16,7 @@
     <version>1.00.00-SNAPSHOT</version>
 
     <scm>
-        <url>
+        <url>https://github.com/cmarchand/json-payload-validation</url>
     </scm>
 
     <properties>
