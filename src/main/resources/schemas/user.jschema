@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "title": "User",
+  "$id": "top:marchand:user",
+  "description": "Schema for validating user creation requests",
+  "required": ["id", "username", "email"],
+  "properties": {
+    "id": { "type": "integer", "minimum": 1 },
+    "username": { "type": "string", "minLength": 3, "maxLength": 50 },
+    "email": { "type": "string", "format": "email" },
+    "age": { "type": "integer", "minimum": 18 }
+  },
+  "additionalProperties": false
+}
