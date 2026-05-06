@@ -1,5 +1,7 @@
 package com.example.individus.services;
 
+import com.example.individus.api.IllegalPayloadException;
+import com.example.individus.dto.User;
 import com.networknt.schema.Error;
 import com.networknt.schema.Schema;
 import com.networknt.schema.SchemaRegistry;
@@ -10,6 +12,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectReader;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +40,14 @@ public class UserSchemaValidationService {
     }
   }
 
-  public List<Error> validateUserPayload(JsonNode json) {
-    return userSchema.validate(json);
+  public User validateUserPayload(JsonNode json) {
+    List<Error> errors = userSchema.validate(json);
+    if(errors.isEmpty()) {
+      // TODO : check if ObjectReader is threadsafe
+      ObjectReader objectReader = objectMapper.readerFor(User.class);
+      return objectReader.readValue(json);
+    } else {
+      throw new IllegalPayloadException(errors);
+    }
   }
 }
